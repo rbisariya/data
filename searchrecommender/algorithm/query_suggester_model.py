@@ -7,6 +7,7 @@ bigrams  = {}
 trigrams = {}
 skip_bigrams ={}
 search_terms ={}
+
 with open("../data/monograms.txt", 'rb') as f:
     for line in f.readlines():
         arr = line.strip().split('\t')
@@ -41,6 +42,7 @@ for key, value in bigram_context.iteritems():
 
 print "anything"
 print len(search_terms)
+
 monogram_context = cg.get_monogram_context(search_terms.keys(),monograms)
 
 print len(monogram_context), "**"

@@ -4,7 +4,7 @@ import re
 import searchrecommender.algorithm.n_gramgenerator as ng
 import searchrecommender.algorithm.stopwords_loader as sl
 
-source_file = "../data/job_search.txt"
+source_file = "../data/job_search_cookies-10000.txt"
 
 def get_search_terms(source_file):
     search_terms = []
@@ -13,18 +13,19 @@ def get_search_terms(source_file):
     lines = []
     with open(source_file) as f:
         for raw_line in f.readlines():
+            print raw_line
             raw_line = raw_line.strip()
             raw_line = re.sub(',', '', raw_line)
 
-            str =raw_line.lower().split('\t')
+            str =raw_line.lower().split('|')
 
             if len(str) < 3:
                 continue
-            line =str[1]+'\t'+str[2]
+            line =str[0]+'|'+str[2]
             if line in lines:
                 continue
             lines.append(line)
-            arr = line.split('\t')
+            arr = line.split('|')
             term = arr[1].strip()
             if term != '':
                 search_terms.append(term)
@@ -54,28 +55,16 @@ for term in rare_terms:
     if term in search_freq.keys():
         del search_freq[term]
 
-"""
-print "len", len(search_freq)
 
-counter =0
-for key, value in ip.iteritems():
-    print key, value
-    counter += 1
-    if counter > 50:
-        break
 
-"""
+
 stopwordfile = "../data/stopwords.txt"
 stopwords = sl.load_stopwords(stopwordfile)
 
 skip_bigrams = ng.get_skip_bigram(search_terms, stopwords)
 count = 0
-"""for key, value in sorted(skip_bigrams.iteritems(), key=lambda (k,v): (v,k),reverse=True):
-    print key, value
-    count += 1
-    if count > 50:
-        break
-"""
+
+
 monograms = ng.getmonogramfrequency(search_terms, stopwords)
 bigrams = ng.getbigramfrequency(search_terms, stopwords)
 
@@ -115,38 +104,4 @@ skip_bigram_stream.close()
 
 
 
-
-"""
-counter =0
-for key, value in sorted(search_freq.iteritems(), key=lambda (k,v): (v,k),reverse=True):
-    print key, value
-    counter += 1
-    if counter > 50:
-        break
-
-
-print len(search_terms)
-
-
-count = 0
-for key, value in sorted(monograms.iteritems(), key=lambda (k,v): (v,k),reverse=True):
-    #print key, value
-    count += 1
-    if count > 50:
-        break
-
-
-
-print {k: monograms[k] for k in monograms.keys()[:10]}
-print {k: bigrams[k] for k in bigrams.keys()[:10]}
-print {k: trigrams[k] for k in trigrams.keys()[:10]}
-
-
-count = 0
-for key, value in sorted(bigrams.iteritems(), key=lambda (k,v): (v,k),reverse=True):
-    #print key, value
-    count += 1
-    if count > 50:
-        break
-"""
 

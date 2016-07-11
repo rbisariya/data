@@ -16,7 +16,7 @@ with open("../data/bigram_context.txt", 'rb') as f:
         bigram_context[arr[0]] = ast.literal_eval(arr[1])
 
 
-query = 'data scientist'
+query = 'java'
 
 arr = query.split()
 last_term = arr[len(arr)-1]
